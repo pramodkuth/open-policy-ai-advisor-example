@@ -1,0 +1,31 @@
+spring:
+  application:
+    name: OPAdvisorApp
+  ai:
+    ollama:
+      base-url: http://localhost:11434
+      chat:
+        options:
+          model: llama3.1
+open-policy:
+  agent:
+    host: http://localhost:8181
+    resilience4j-instance: opa
+  advisors:
+    my-prompt-safety-advisor:
+      policies:
+        - name: test-guard
+          path: v1/data/agentpolicy/allow
+          guard-prompt: true
+          guard-tools: true
+resilience4j:
+  circuitbreaker:
+    instances:
+      opa:
+        sliding-window-size: 10
+        failure-rate-threshold: 50
+  retry:
+    instances:
+      opa:
+        max-attempts: 3
+        wait-duration: 500ms

@@ -1,0 +1,11 @@
+version: "3.8"
+
+services:
+  opa:
+    image: openpolicyagent/opa:latest
+    container_name: opa-server
+    command: run --server --addr=0.0.0.0:8181 /policies
+    volumes:
+      - ./policies:/policies:ro   # mount read-only
+    ports:
+      - "8181:8181"
